@@ -1,0 +1,119 @@
+/* Enter your custom styles here *//* =========================
+   PAGE & HEADER
+========================= */
+#registrationPage {
+    background-color: #f7f9fc;
+}
+
+#_IDGenHBox3 {
+    align-items: center;
+    gap: 12px;
+}
+
+/* =========================
+   WIZARD CONTAINER
+========================= */
+.sapMWizard {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   WIZARD STEPS
+========================= */
+.sapMWizardStep {
+    padding-top: 1rem;
+}
+
+.sapMWizardStepTitle {
+    font-weight: 600;
+}
+
+/* =========================
+   FORM CONTROLS
+========================= */
+.sapMInputBase,
+.sapMSelect,
+.sapMTextArea,
+.sapMDatePicker {
+    border-radius: 8px;
+}
+
+/* Add space between labels & fields */
+.sapMLabel {
+    margin-top: 0.75rem;
+    font-weight: 600;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.sapMBtnEmphasized {
+    border-radius: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.sapMBtnDefault {
+    border-radius: 20px;
+}
+
+/* Wizard next buttons spacing */
+#_IDGenButton,
+#_IDGenButton1,
+#_IDGenButton3 {
+    margin-top: 1.5rem;
+}
+
+/* =========================
+   FILE UPLOADER
+========================= */
+#receiptUploader {
+    margin-top: 0.5rem;
+}
+
+.sapUiFupButton {
+    border-radius: 16px;
+}
+
+/* =========================
+   RECEIPT LIST
+========================= */
+.sapMList {
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.sapMCustomListItem {
+    padding: 0.75rem;
+}
+
+.sapMCustomListItem:hover {
+    background-color: #f0f4ff;
+}
+
+/* =========================
+   PREVIEW SECTION
+========================= */
+.sapUiForm {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Section titles */
+.sapMTitle {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.sapFDynamicPageFooter {
+    background: white;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+}

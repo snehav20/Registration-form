@@ -1,0 +1,126 @@
+_schema-version: 3.3.0
+ID: Registration
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: Registration-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: Registration-db
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: Registration-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: Registration-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: Registration-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: Registration-destination-service
+    parameters:
+      content-target: true
+  - name: Registration_html_repo_host
+    parameters:
+      service-key:
+        name: Registration_html_repo_host-key
+  - name: uaa_Registration
+    parameters:
+      service-key:
+        name: uaa_Registration-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: Register_Registration_html_repo_host
+          ServiceInstanceName: Registration-html5-app-host-service
+          ServiceKeyName: Registration_html_repo_host-key
+          sap.cloud.service: Register
+        - Authentication: OAuth2UserTokenExchange
+          Name: Register_uaa_Registration
+          ServiceInstanceName: Registration-xsuaa-service
+          ServiceKeyName: uaa_Registration-key
+          sap.cloud.service: Register
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: Registration-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: Registration_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - registration.zip
+      name: registration
+      target-path: resources/
+- name: registration
+  type: html5
+  path: app/registration
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: Registration-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: Registration-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: Registration-destination-service
+    service-plan: lite
+- name: Registration_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: Registration-html5-app-host-service
+    service-plan: app-host
+- name: uaa_Registration
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: Registration-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
